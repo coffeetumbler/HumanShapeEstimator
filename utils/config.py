@@ -2,6 +2,7 @@ import os
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 LOG_DIR = PROJECT_DIR + '/logs/'
+BASE_DATASET_DIR = ''  # Write your/dataset/directory/
 
 SMPL_MEAN_PARAMS_DIR = PROJECT_DIR + '/data/smpl_mean_params.npz'
 J_REGRESSOR_DIR = {'neutral' : PROJECT_DIR + '/data/J_regressor_neutral.pt',
@@ -63,10 +64,6 @@ POSITION_VECTOR_OPTIONS = {'model' : 'hmr_regressor',
                            'dropout' : DROPOUT_RATIO
                           }
 
-# HMR_REGRESSION_DIM = 6 if POSITION_VECTOR_OPTIONS['global_rotation'] else 0
-# if POSITION_VECTOR_OPTIONS['camera_params']:
-#     HMR_REGRESSION_DIM += 3
-
 
 TRANSFORMER_OPTIONS = {'d_embed' : EMBEDDING_DIM,
                        'positional_encoding' : None,
@@ -81,8 +78,6 @@ TRANSFORMER_OPTIONS = {'d_embed' : EMBEDDING_DIM,
                        'dropout' : DROPOUT_RATIO
                       }
 
-# TRANSFORMER_OUTPUT_DIM = EMBEDDING_DIM + HMR_REGRESSION_DIM
-
     
 SHAPE_EXTRACTION_OPTIONS = {'layer_info' : [2048, 2048, 2048, SHAPE_PARAMETER_DIM],
                             'extra_output' : None,
@@ -90,8 +85,6 @@ SHAPE_EXTRACTION_OPTIONS = {'layer_info' : [2048, 2048, 2048, SHAPE_PARAMETER_DI
                            }
 
 
-
-BASE_DATASET_DIR = '/mnt/d/ubuntu/datasets/'
 
 SURREAL_DATASET_DIR = {'train' : BASE_DATASET_DIR + 'SURREAL/data/cmu/train/',
                        'test' : BASE_DATASET_DIR + 'SURREAL/data/cmu/test/',
