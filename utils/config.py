@@ -8,9 +8,7 @@ SMPL_MEAN_PARAMS_DIR = PROJECT_DIR + '/data/smpl_mean_params.npz'
 J_REGRESSOR_DIR = {'neutral' : PROJECT_DIR + '/data/J_regressor_neutral.pt',
                    'male' : PROJECT_DIR + '/data/J_regressor_male.pt',
                    'female' : PROJECT_DIR + '/data/J_regressor_female.pt'}
-SMPL_FACES_DIR = {'neutral' : PROJECT_DIR + '/data/smpl_faces_neutral.npy',
-                  'male' : PROJECT_DIR + '/data/smpl_faces_male.npy',
-                  'female' : PROJECT_DIR + '/data/smpl_faces_female.npy'}
+SMPL_FACES_DIR = PROJECT_DIR + '/data/smpl_faces_neutral.npy'
 
 TEST_PROTOCOL_DIR = {'surreal' : PROJECT_DIR + '/data/protocol/test_protocol_surreal.npz',
                      '3dpw' : PROJECT_DIR + '/data/protocol/test_protocol_3dpw.npz'}

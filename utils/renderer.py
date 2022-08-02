@@ -27,7 +27,7 @@ class Renderer:
         self.focal_length = focal_length
         self.camera_center = [img_res // 2, img_res // 2]
         
-        self.faces = np.load(config.SMPL_FACES_DIR['neutral'])
+        self.faces = np.load(config.SMPL_FACES_DIR)
 
     def visualize_tb(self, vertices, camera_translation, images):
         vertices = vertices.cpu().numpy()
