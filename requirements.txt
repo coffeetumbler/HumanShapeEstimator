@@ -1,0 +1,7 @@
+numpy
+opencv-python
+tqdm
+tensorboard
+pyrender
+transforms3d
+pillow
