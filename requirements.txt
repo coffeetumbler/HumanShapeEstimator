@@ -5,3 +5,4 @@ tensorboard
 pyrender
 transforms3d
 pillow
+chumpy

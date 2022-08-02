@@ -143,7 +143,7 @@ def parse_args():
     parser.add_argument("--model_dir", required=True, type=str,
                         help="File name of the model")
     parser.add_argument("--model_type", required=True, type=str,
-                        help="Type of the model; simple/shape_focused")
+                        help="Type of the model; 'simple' for single-frame model and 'shape_focused' for multi-frame model")
     parser.add_argument("--state_dict_dir", required=True, type=str,
                         help="File name of the state dictionary")
     
