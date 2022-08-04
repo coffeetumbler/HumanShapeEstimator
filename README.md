@@ -19,9 +19,12 @@ pip install -r requirements.txt
 To render 3D mesh, the OSMesa has to be installed with pyrender package.
 Please go to [this website](https://pyrender.readthedocs.io/en/latest/install/index.html) and follow the instructions.
 
-Next, you need to download the SMPL body model.
+
+## Data Preparation
+
+First, you need to download the SMPL body model.
 Please download the male and female models from [here](https://smpl.is.tue.mpg.de/), and the neutral model from [here](https://smplify.is.tue.mpg.de/).
-After you register at both websites, please download the model files and locate them as below.
+After you register at both websites, please download the model files and locate them in `data/smpl/` as below.
 
 ```
 data
@@ -29,22 +32,24 @@ data
     |-- basicModel_f_lbs_10_207_0_v1.0.0.pkl
     |-- basicModel_m_lbs_10_207_0_v1.0.0.pkl
     |-- basicModel_neutral_lbs_10_207_0_v1.0.0.pkl
+|-- options
+|-- ...
 ```
 
-Now, you can preprocess these files by running the command below.
-
-```
-python3 utils/data_preprocessing.py
-```
-
-Before downloading image datasets, you have to write the path to your dataset directory in `utils/config.py`.
+Next, you have to write the path to your dataset directory in `utils/config.py`.
 Please make your own path end with `/`.
 
 ```
 BASE_DATASET_DIR = 'your/dataset/directory/'  # Write your/dataset/directory/
 ```
 
-To evaluate our methods on the 3DPW dataset, you need to download the dataset from [here](https://virtualhumans.mpi-inf.mpg.de/3DPW/) and locate it in your dataset directory as below.
+To evaluate our methods on the 3DPW dataset, you need to download the dataset from [here](https://virtualhumans.mpi-inf.mpg.de/3DPW/) and locate it in your dataset directory `your/dataset/directory/`.
+
+If you want to pre-train our models from scratch or evaluate on the SURREAL dataset, you need to visit [this website](https://github.com/gulvarol/surreal) and request access to the data.
+Please follow the instructions in the website and download the dataset in your dataset directory `your/dataset/directory`.
+The entire dataset requires large disk space, so you can download the partial dataset of videos (`*.mp4`), data infos (`*_info.mat`), and segmentations (`*_segm.mat`).
+
+The structure of your dataset directory should be as follows:
 
 ```
 your/dataset/directory
@@ -57,22 +62,28 @@ your/dataset/directory
         |-- test
         |-- train
         |-- validation
+|-- SURREAL (optional)
+    |-- data
+        |-- cmu
+            |--test
+            |--train
+            |--val
 ```
 
-If you finish downloading the data, please move the whole files in `data/3DPW_infos/` into `your/dataset/directory/3DPW/infos/`.
+Now, you can preprocess all data by running the command below.
 
 ```
-mv data/3DPW_infos your/dataset/directory/3DPW/infos
+python3 utils/data_preprocessing.py
 ```
 
 
 ## Running Demo Code
 
 We provide the demo code to run our trained models on an input sequence in the 3DPW test protocol.
-You can estimate the body shape from an image sequence of the given frame length and index.
+You can estimate the body shape from an image sequence of given frame length and index.
 
 ```
-python3 demo.py --n_frames=6 --test_index=2505
+python3 demo.py --n_frames=6 --test_index=2505  # input sequence length 6 and index 2505
 ```
 
 This code will make cropped input images, the ground truth mesh, meshes from the single-frame model, and a mesh from the multi-frame model with MPVEs in `examples/demo/`.
@@ -80,16 +91,51 @@ This code will make cropped input images, the ground truth mesh, meshes from the
 
 ## Evaluation
 
-You can also evaluate our models on the 3DPW test set or 3DPW test protocol.
+You can also evaluate our models on the 3DPW or SURREAL dataset.
 We provide the model checkpoints of the single-frame and multi-frame models in `logs/`.
 The test code will compute the average MPVE between the ground truth meshes and the mesh predictions.
 
 ```
-# Evaluation of the single-frame method on the 3DPW test set
-python3 test.py --model_dir=logs/single-frame_estimator_fine-tuned/model.pt --model_type=simple --state_dict_dir=logs/single-frame_estimator_fine-tuned/state_dict.pt
+# Evaluation of the pre-trained single-frame model on the SURREAL test set
+python3 test.py --model_dir=logs/single-frame_estimator_pre-trained/model.pt --model_type=simple --state_dict_dir=logs/single-frame_estimator_pre-trained/state_dict.pt --dataset=surreal
 
-# Evaluation of the multi-frame method on the 3DPW test protocol (frame lengths from 1 to 15)
-python3 test.py --model_dir=logs/multi-frame_estimator_fine-tuned/model.pt --model_type=shape_focused --state_dict_dir=logs/multi-frame_estimator_fine-tuned/state_dict.pt
+# Evaluation of the pre-trained multi-frame model on the SURREAL test protocol (frame lengths from 1 to 15)
+python3 test.py --model_dir=logs/multi-frame_estimator_pre-trained/model.pt --model_type=shape_focused --state_dict_dir=logs/multi-frame_estimator_pre-trained/state_dict.pt --dataset=surreal
+
+# Evaluation of the fune-tuned single-frame model on the 3DPW test set
+python3 test.py --model_dir=logs/single-frame_estimator_fine-tuned/model.pt --model_type=simple --state_dict_dir=logs/single-frame_estimator_fine-tuned/state_dict.pt --dataset=3dpw
+
+# Evaluation of the fune-tuned multi-frame model on the 3DPW test protocol (frame lengths from 1 to 15)
+python3 test.py --model_dir=logs/multi-frame_estimator_fine-tuned/model.pt --model_type=shape_focused --state_dict_dir=logs/multi-frame_estimator_fine-tuned/state_dict.pt --dataset=3dpw
+
+# Evaluation of your model; Please check the options in test.py.
+python3 test.py --model_dir=your/trained/model.pt --model_type=your_model_type --state_dict_dir=your/trained/state_dict.pt --dataset=target_dataset
 ```
 
-We are preparing to make instructions for the SURREAL dataset downloading & preprocessing, the entire process from pre-training to fine-tuning with customized options.
+
+## Training
+
+We pre-train our models on the SURREAL dataset and then fine-tune them on the 3DPW dataset.
+You can train your own models (single-frame and multi-frame) with the default option and the recommended options we provide.
+
+```
+# Pre-train a single-frame model.
+python3 train.py --model=simple  # default option
+
+# Fine-tune a single-frame model.
+python3 train.py --model=simple --single_finetuning_options --checkpoint=your/pre-trained/model/state_dict.pt  # recommanded option
+
+# Pre-train a multi-frame model.
+python3 train.py --model=aggregation --multi_pretraining_options  # recommanded option
+
+# Fine-tune a multi-frame model.
+python3 train.py --model=aggregation --multi_finetuning_options --checkpoint=your/pre-trained/model/state_dict.pt  # recommanded option
+```
+
+If you want to customize your own model, please check the detailed options in `utils/options.py`.
+The logs files (checkpoints, tensorboard summary, comments, options) will be saved in `logs/` folder.
+You can check your training summaries by running tensorboard.
+
+```
+tensorboard --logdir=logs/your_trained_log_folder/
+```

@@ -1,8 +1,9 @@
 numpy
 opencv-python
 tqdm
-tensorboard
+tensorboard==2.6.0
 pyrender
 transforms3d
 pillow
 chumpy
+setuptools=59.5.0

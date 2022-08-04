@@ -100,7 +100,7 @@ def test(args):
                     pred_shape, _ = model(images, gt_shape.shape[0], images)
                 else:
                     num_inputs = model.forward.__code__.co_argcount
-                    if num_inputs == 2:
+                    if num_inputs == 2 or num_inputs == 6:
                         outputs = model(images)
                         if isinstance(outputs, tuple):
                             if len(outputs) == 2:
