@@ -24,7 +24,7 @@ Please go to [this website](https://pyrender.readthedocs.io/en/latest/install/in
 
 First, you need to download the SMPL body model.
 Please download the male and female models from [here](https://smpl.is.tue.mpg.de/), and the neutral model from [here](https://smplify.is.tue.mpg.de/).
-After you register at both websites, please download the model files and locate them in `data/smpl/` as below.
+After you register at both websites, please create `data/smpl/` folder and download the model files in the folder as follows:
 
 ```
 data
@@ -80,20 +80,34 @@ python3 utils/data_preprocessing.py
 ## Running Demo Code
 
 We provide the demo code to run our trained models on an input sequence in the 3DPW test protocol.
-You can estimate the body shape from an image sequence of given frame length and index.
+You need to download our test protocols and checkpoints of the single-frame and multi-frame models from [logs](https://drive.google.com/file/d/1SM_R1kEJ1wiqThgvsYm_Hl1v49aBz9aD/view?usp=sharing) and [protocol](https://drive.google.com/file/d/1d-r3G6L14j-KLHFh3CIrs2cWtWqVODbM/view?usp=sharing).
+Please create `logs/` and `data/protocol/` folders and locate the downloaded files as follows:
+
+```
+data
+|-- protocol
+    |-- test_protocol_3dpw.npz
+    |-- test_protocol_surreal.npz
+|-- ...
+logs
+|-- multi-frame_estimator_fine-tuned
+|-- multi-frame_estimator_pre-trained
+|-- single-frame_estimator_fine-tuned
+|-- single-frame_estimator_pre-trained
+```
+
+You can now estimate the body shape from an image sequence of given frame length and index.
+This command will make cropped input images, the ground truth mesh, meshes from the single-frame model, and a mesh from the multi-frame model with MPVEs in `examples/demo/`.
 
 ```
 python3 demo.py --n_frames=6 --test_index=2505  # input sequence length 6 and index 2505
 ```
 
-This code will make cropped input images, the ground truth mesh, meshes from the single-frame model, and a mesh from the multi-frame model with MPVEs in `examples/demo/`.
-
 
 ## Evaluation
 
 You can also evaluate our models on the 3DPW or SURREAL dataset.
-We provide the model checkpoints of the single-frame and multi-frame models in `logs/`.
-The test code will compute the average MPVE between the ground truth meshes and the mesh predictions.
+The test code below will compute the average MPVE between the ground truth meshes and the mesh predictions.
 
 ```
 # Evaluation of the pre-trained single-frame model on the SURREAL test set
