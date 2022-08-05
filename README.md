@@ -12,6 +12,7 @@ Please install Pytorch compatible with your CUDA version.
 conda create --name your_env_name python=3.9.5
 conda activate your_env_name
 
+# Write your CUDA version (+cuXXX) or use CPU only (+cpu)
 pip install torch==1.9.0+cuXXX torchvision==0.10.0+cuXXX -f https://download.pytorch.org/whl/torch_stable.html
 pip install -r requirements.txt
 ```
