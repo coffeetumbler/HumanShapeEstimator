@@ -139,13 +139,13 @@ You can train your own models (single-frame and multi-frame) with the default op
 python3 train.py --model=simple  # default option
 
 # Fine-tune a single-frame model.
-python3 train.py --model=simple --single_finetuning_options --checkpoint=your/pre-trained/model/state_dict.pt  # recommanded option
+python3 train.py --model=simple --single_finetuning_options --checkpoint=your/pre-trained/model/state_dict.pt  # recommended option
 
 # Pre-train a multi-frame model.
-python3 train.py --model=aggregation --multi_pretraining_options  # recommanded option
+python3 train.py --model=aggregation --multi_pretraining_options  # recommended option
 
 # Fine-tune a multi-frame model.
-python3 train.py --model=aggregation --multi_finetuning_options --checkpoint=your/pre-trained/model/state_dict.pt  # recommanded option
+python3 train.py --model=aggregation --multi_finetuning_options --checkpoint=your/pre-trained/model/state_dict.pt  # recommended option
 ```
 
 If you want to customize your own model, please check the detailed options in `utils/options.py`.
