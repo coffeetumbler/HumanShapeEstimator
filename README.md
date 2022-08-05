@@ -94,6 +94,7 @@ logs
 |-- multi-frame_estimator_pre-trained
 |-- single-frame_estimator_fine-tuned
 |-- single-frame_estimator_pre-trained
+|-- pretrained/splitted_simple_model_with_nonflip_augmentation (pre-trained backbone)
 ```
 
 You can now estimate the body shape from an image sequence of given frame length and index.
