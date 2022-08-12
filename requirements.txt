@@ -6,4 +6,4 @@ pyrender
 transforms3d
 pillow
 chumpy
-setuptools=59.5.0
+setuptools==59.5.0
